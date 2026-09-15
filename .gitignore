@@ -1,0 +1,10 @@
+# AI Agent cache & logs                                                                                                       
+.pi/
+
+# Environment variables
+.env
+*.env.local
+
+# OS files
+.DS_Store
+Thumbs.db 
