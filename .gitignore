@@ -1,10 +1,31 @@
-# AI Agent cache & logs                                                                                                       
-.pi/
+# .NET build artifacts
+**/bin/
+**/obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+_ReSharper*/
 
-# Environment variables
+# Node & Frontend
+**/node_modules/
+**/dist/
+**/build/
+.npm/
+*.log
+
+# AI Agent cache & logs
+.pi/
+.omp/
+
+# Environment & Secrets
 .env
 *.env.local
+*.env.*.local
+appsettings.Production.json
 
 # OS files
 .DS_Store
-Thumbs.db 
+Thumbs.db
+desktop.ini

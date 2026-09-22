@@ -1,6 +1,6 @@
 ---
 name: diagram-design
-description: Create branded architecture, IT current-state, flowchart, sequence, state machine, ER/data model, timeline, swimlane, quadrant, radar/spider, polar chart (polar/radial lollipop), loop/flywheel, nested, tree, org chart, layer stack, Venn, pyramid/funnel, treemap, bar, waterfall, line, Gantt and scatter charts, high-level, process, medallion, data flow, DP integration, DP security matrix, Sankey, fishbone, Wardley map, kanban, user journey, deployment, dependency graph, UML class, story map, or database schema diagrams as standalone HTML/SVG/PNG. Redraw .drawio/.drawio.png/.drawio.svg, Mermaid .mmd, or Excalidraw .excalidraw sources at a chosen size/detail; onboard brand tokens from a website; add semantic patterns, callouts, accessible motion, or sketchy/hand-drawn styling.
+description: Create branded architecture, IT current-state, flowchart, sequence, state machine, ER/data model, timeline, swimlane, quadrant, radar/spider, polar chart (polar/radial lollipop), loop/flywheel, nested, tree, org chart, layer stack, Venn, pyramid/funnel, treemap, bar, waterfall, line, Gantt and scatter charts, high-level, process, medallion, data flow, DP integration, DP security matrix, Sankey, fishbone, Wardley map, kanban, user journey, deployment, dependency graph, UML class, story map, or database schema diagrams as standalone HTML/SVG/PNG. Redraw .drawio/.drawio.png/.drawio.svg, Mermaid .mmd, or Excalidraw .excalidraw sources at a chosen size/detail; onboard brand tokens from a website; add lifecycle phase maps, semantic patterns, callouts, accessible motion, or sketchy/hand-drawn styling.
 license: MIT
 metadata:
   version: "2.6"
@@ -20,15 +20,11 @@ Forty visual types. Semantic patterns describe behavior independently; type refe
 
 Don't silently ship default-skinned diagrams into a branded project.
 
-First check the project root for a `.diagram-design` marker and resolve it per [`references/profiles.md`](references/profiles.md). A valid marker whose profile exists selects that file directly and skips this gate; `profile: default` also skips it. A malformed or missing-profile marker follows the visible failure handling in that reference. Never copy a marker-selected profile over the installed working copy.
+First resolve any project `.diagram-design` marker per [`references/profiles.md`](references/profiles.md); a successfully resolved marker selects its profile and bypasses this gate. That reference owns failures, the protected default, and save behavior.
 
-Open [`references/style-guide.md`](references/style-guide.md) and check the default tokens. If they're still the shipped defaults (paper `#f5f5f5`, ink `#2d3142`, accent `#eb6c36` atomic-tangerine), **pause and ask the user**:
+For a markerless project, open [`references/style-guide.md`](references/style-guide.md). If it still has the shipped paper, ink, and accent tokens, **pause and present the choices from [`references/onboarding.md`](references/onboarding.md)**, then follow the selected method; saved profiles route to `references/profiles.md`.
 
-> *"This is your first diagram in this project. The style guide is still at the default (neutral white-smoke + atomic-tangerine). Do you want to customize it to match your brand first? Options: (a) pull from your website URL, (b) extract from an installed skill, (c) extract from a local folder / design-system directory, (d) paste tokens manually, (e) proceed with the default for now, (f) load a saved client profile."*
-
-Then branch per the matching section of [`references/onboarding.md`](references/onboarding.md); for **(f)** follow [`references/profiles.md`](references/profiles.md).
-
-**Once the style guide has been customized** (or the user explicitly opted for default), skip this gate on subsequent runs. A leading profile header names the copied-in active profile. Without a header, any semantic-role value or typography family differing from shipped defaults means **custom-unsaved**: skip the gate and offer to save it as a profile. All-default tokens with no marker/header trigger the gate. At the end of every onboarding method, offer to save the result as a named client profile per `references/profiles.md`.
+After customization or an explicit default choice, skip this gate. Detect and save active/custom profiles exactly as `references/profiles.md` specifies.
 
 ---
 
@@ -76,6 +72,7 @@ When behavior, state, enforcement, or risk carries the meaning, first load [`ref
 | Controls grouped by where they are enforced | **Governance / control catalog** → Layer stack |
 | Defenses compensate for prior gaps and residual risk propagates | **Compensating security layers** → Layer stack |
 | Hierarchical, ID-addressable decomposition needing per-block I/O, constraints, and a code link | **Traceable block decomposition** → Tree |
+| One subject progresses through phases, waits, retries, cancellation, and terminal outcomes | **Lifecycle phase map** → State Machine |
 
 The pattern owns semantic primitives and its tighter budget; the type owns layout grammar. Use [`references/animation.md`](references/animation.md) only when motion is requested or materially clarifies ordered change; static remains the default.
 
@@ -201,12 +198,12 @@ Type-specific anti-patterns live in each type reference linked in the guide.
 - **Arrow label** — Geist Mono, 8px — annotation on arrows
 - **Editorial aside** — Instrument Serif *italic*, 14px — callouts only
 
-**CJK labels** — Geist and Instrument Serif carry no Hangul or Han; extend the family and keep CJK at 12px+. Rules: [Korean](references/style-guide.md#korean-labels), [Chinese](references/style-guide.md#traditional-chinese-labels).
+**Non-Latin labels** — extend the family: [Korean](references/style-guide.md#korean-labels), [Chinese](references/style-guide.md#traditional-chinese-labels), [Cyrillic](references/style-guide.md#cyrillic-labels).
 
 **Mono is for technical content only** — never as a blanket "dev" font, and never JetBrains Mono.
 
 ```html
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@400&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&family=Noto+Serif:ital@0;1&family=Noto+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@400&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@400&display=swap" rel="stylesheet">
 ```
 
 ---
@@ -292,6 +289,14 @@ These six rules are **non-negotiable**. Run the pre-output checklist (§9) to ve
 
 6. **A label mask must not overlap a node drawn after it.** Rule 2 keeps the label off its own connector; this one keeps it off the boxes. Because nodes are painted after labels, a mask that lands partly inside a node is covered by the node fill and the text renders as a fragment sitting on the node border. Place the label on a segment of the connector that runs through open canvas — for a connector leaving a node's right edge, that means clearing the node's `x + width` before the mask starts. A mask fully *inside* a node is a badge chip and is fine; a mask overlapping a zone container is fine too, since zones are painted first. From a repository checkout, verify with `python3 <repo-root>/scripts/verify-geometry.py <file>`.
 
+7. **No crossing container headers, borders, or zone titles.** Connectors and arrow labels must never slice through container borders, zone header chips, or zone titles. When connecting between two containers or zones, route the connector through clear corridors (buffers of ≥16px from borders and text). The label's mask rect must match the underlying background color exactly (e.g. `fill="#ececec"` when over a container, `fill="#f5f5f5"` when over canvas) so it never creates discolored patches, covers borders, or cuts text in half.
+
+8. **Intuitive flow direction — no long reverse U-turns.** The primary flow of the diagram must read naturally: Top-to-Bottom, Left-to-Right, or an orderly Z-pattern. Never route an arrow backwards 180 degrees across the entire width of the diagram (e.g. from the far right back to the far left). If node B is downstream of node A, position node B adjacent to or directly below node A so the arrow is direct, short, and immediately obvious to any reader. Secondary relationships (e.g. trigger-based specialists or async callbacks) must use dashed lines (`stroke-dasharray="4,3"`) with clear, non-overlapping routing.
+
+9. **No connector transit through intervening cards.** A connector must NEVER transit across the body of an unrelated node or card. If node A links to node C, never place node B between them on the connector path. **Reorder the cards** so linked nodes sit directly adjacent (e.g. place `code-review` adjacent to `task-execution`), or route the connector around the perimeter corridor with ample clearance.
+
+10. **Tag chip vs node title clearance (≥8px vertical space).** Tag chips (`ACTOR`, `ROUTER`, `CỔNG G1`, etc.) and node titles must never share the same horizontal baseline or collide horizontally. When a title is long, **always stack vertically**: tag chip on the top row (`y=10..22`), node title on the second row (`y=38..48`) with at least 8px of clear vertical space between them.
+
 ### Node box — full pattern
 
 ```svg
@@ -349,20 +354,14 @@ Expand SVG `viewBox` height by ~60px.
 
 ### 4px grid
 
-**All values — font sizes, padding, node dimensions, gaps, x/y coords — divisible by 4.** Non-negotiable.
+**Structural geometry, divisible by 4:** node origins, widths, heights, gaps, padding. Off-grid by design: type sizes (role ramp in `references/output-spec.md`), radii, data-derived positions, text baselines, arrow markers, `.5` offsets that keep 1px strokes crisp, stroke widths, opacity, and the 22×22 dot-pattern.
 
 | Category | Allowed values |
 |---|---|
-| Font sizes | 8, 12, 16, 20, 24, 28, 32, 40 |
 | Node width / height | 80, 96, 112, 120, 128, 140, 144, 160, 180, 200, 240, 320 |
-| x / y coordinates | multiples of 4 |
 | Gap between nodes | 20, 24, 32, 40, 48 |
 | Padding inside boxes | 8, 12, 16 |
 | Border radius | 4, 6, 8 |
-
-Exempt: stroke widths (0.8, 1, 1.2), opacity values, and the 22×22 dot-pattern.
-
-Quick check: if a coordinate ends in 1, 2, 3, 5, 6, 7, 9 — fix it.
 
 ### Complexity budget (per diagram)
 
@@ -485,12 +484,15 @@ Run before producing any diagram.
 - [ ] **When several connectors enter or exit the same edge of a box, each has its own attach point (≥12px apart)? No connector hides another?**
 - [ ] **No connector passes behind a non-endpoint box, except the unavoidable-intervening-box case (§6 rule 5) — and in that case, the stroke is dashed and the label sits at the visible end?**
 - [ ] **No label mask overlaps a node drawn after it? (Node fill would clip the text — §6 rule 6. From a repository checkout, run `python3 <repo-root>/scripts/verify-geometry.py <file>`.)**
-- [ ] Every arrow label has an opaque `fill="#f5f5f5"` rect behind it?
+- [ ] **No connector or label slices through container borders, zone titles, or headers (§6 rule 7)? Clear corridors ≥16px preserved?**
+- [ ] **Label mask fill matches the underlying zone background color exactly (no discolored patches or cuts)?**
+- [ ] **Flow reads naturally without reverse 180° U-turn connectors across the canvas (§6 rule 8)? Downstream nodes placed adjacent or directly below?**
 - [ ] Legend is a horizontal bottom strip, not floating?
 - [ ] No vertical `writing-mode` text?
 - [ ] `viewBox` expanded for the legend strip (~60px)?
-- [ ] Every font size, coord, width, height, gap divisible by 4?
-- [ ] From the installed skill directory, did `python3 scripts/self_check.py <file>` pass? (Accessible-SVG contract, single-file safety, motion basics.)
+- [ ] Node origins, dimensions, gaps, padding on the 4px grid; type sizes on the role ramp?
+- [ ] Ran the mandatory Browser Native refinement gate: fonts settled, DOM/SVG geometry measured, connector rules checked, and screenshot evidence captured.
+- [ ] From the installed skill directory, did `python3 scripts/self_check.py <file>` pass? (Accessible-SVG contract, single-file safety, motion basics; supplementary to Browser Native.)
 - [ ] If animated, does the complete static/no-JS frame work, does reduced motion hide/disable playback, and is the controller copied verbatim from `assets/template-motion.html`? From a repository checkout, also run `python3 <repo-root>/scripts/verify-motion.py path/to/generated.html` plus the skin linter; from an installed skill, manually check print and static-query states on top of the self-check.
 
 **Typography:**
@@ -501,6 +503,34 @@ Run before producing any diagram.
 - [ ] Page title in Instrument Serif?
 - [ ] Annotation callouts (if any) in *italic* Instrument Serif? (see [primitive-annotation.md](references/primitive-annotation.md))
 - [ ] No JetBrains Mono anywhere?
+
+
+## 9.1. Tinh chỉnh Font chữ & Mũi tên bằng Engine Browser Native (Quality Gate bắt buộc)
+
+Khi tạo hoặc sửa bất kỳ file sơ đồ HTML/SVG nào, AI **bắt buộc** chạy quality gate này trước khi bàn giao. Đây là kiểm thử tự động, không chờ người dùng chọn và không được bỏ qua:
+
+1. **Mở và ổn định trang:**
+   - Dùng `browser.open({ url: "file://..." })` với file sơ đồ.
+   - Chờ `document.fonts.ready`, sau đó chờ thêm hai `requestAnimationFrame` để layout ổn định trước khi đo.
+   - Nếu file dùng font remote và font chưa tải được, ghi nhận lỗi; không dùng fallback để claim Pass.
+
+2. **Đo Font chữ thực tế, chống tràn hộp & chống đè chữ lên Tag Chip:**
+   - Dùng `tab.run`/DOM thật để lấy `getBBox()` và `getComputedTextLength()` của các node text, đặc biệt nhãn tiếng Việt có dấu.
+   - Đối chiếu text box với node `<rect>` tương ứng. Text không được tràn và phải có padding tối thiểu 16px mỗi bên.
+   - **Kiểm tra va chạm Tag Chip vs Title:** Lấy `getBBox()` của tag chip `<rect>` và title `<text>`; assert rằng title không đè lên tag chip (khoảng cách tối thiểu 8px). Nếu title dài, bắt buộc xếp dọc (chip ở trên, title ở dưới).
+   - Nếu phát hiện lỗi, sửa file nguồn, mở lại trang và đo lại từ đầu.
+
+3. **Kiểm tra connector và va chạm xuyên khối (No transit through intervening cards):**
+   - Xác nhận connector `<path>`/`<line>` bám đúng mép node, không đâm vào thân node và **tuyệt đối không đi xuyên qua bất kỳ node trung gian nào**. Nếu phát hiện connector cắt qua thẻ khác (ví dụ: mũi tên review cắt qua thẻ diagram), phải đổi thứ tự sắp xếp các thẻ hoặc định tuyến lại qua hành lang biên.
+   - Đo label mask và đường stroke: khoảng cách nhìn thấy phải từ 6px đến 10px; mask rect phải có màu nền trùng khớp với container hoặc canvas bên dưới.
+   - Connector song song phải cách nhau tối thiểu 12px; không có hai connector trùng stroke hoặc che nhau.
+   - Diagram mới nên gắn semantic attributes ổn định (`data-diagram-node`, `data-diagram-connector`, `data-diagram-label`) để việc đo và liên kết node/connector không phụ thuộc vào vị trí DOM.
+
+4. **Bằng chứng và điều kiện thất bại:**
+   - Chạy `await tab.screenshot()` sau khi các phép đo đạt, lưu screenshot cùng evidence của task.
+   - Đóng tab sau khi hoàn tất kiểm tra.
+   - Nếu bất kỳ assertion nào thất bại, trạng thái là `failed`; sửa nguồn và chạy lại. Nếu Browser Native không khởi chạy được, trạng thái là `not-run`. Cả hai trạng thái đều chặn bàn giao và claim Done.
+   - Chỉ sau khi quality gate đạt mới được dùng `ask` cho nhu cầu preview trực quan tùy chọn. `ask` không quyết định việc có chạy kiểm thử hay không.
 
 ---
 
